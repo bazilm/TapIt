@@ -20,6 +20,12 @@ public class BackgroundGrid extends GameActor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
+        renderer.setAutoShapeType(true);
+        renderer.begin();
+        renderer.setColor(color);
+        renderer.set(ShapeRenderer.ShapeType.Filled);
+        renderer.rect(x, y, width, height);
+        renderer.end();
 
 
 

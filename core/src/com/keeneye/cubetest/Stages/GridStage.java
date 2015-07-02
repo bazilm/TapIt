@@ -19,7 +19,7 @@ public class GridStage extends Stage {
     private BackgroundGrid back_grids[][];
     private ShapeRenderer renderer;
     private RandomUtils randomUtils;
-    private float spawn_time;
+    private float spawn_time,background_change_time;
 
 
 
@@ -35,7 +35,20 @@ public class GridStage extends Stage {
         renderer = new ShapeRenderer();
 
         spawn_time=0;
+        background_change_time=0;
 
+
+        for(int i=0;i<2;i++)
+        {
+            for(int j=0;j<2;j++)
+            {
+                back_grids[i][j]=new BackgroundGrid(j*240,i*400,240,400,renderer);
+                back_grids[i][j].setColor(randomUtils.getRandomColor());
+                addActor(back_grids[i][j]);
+
+
+            }
+        }
 
         for(int i=0;i<4;i++)
         {
@@ -50,16 +63,7 @@ public class GridStage extends Stage {
 
         }
 
-        for(int i=0;i<2;i++)
-        {
-            for(int j=0;j<2;j++)
-            {
-                back_grids[i][j]=new BackgroundGrid(j*240,i*400,240,400,renderer);
-                addActor(back_grids[i][j]);
 
-
-            }
-        }
 
         Gdx.input.setInputProcessor(this);
 
@@ -71,6 +75,7 @@ public class GridStage extends Stage {
         super.act(delta);
 
         spawn_time+=delta;
+        background_change_time+=delta;
 
 
         if(spawn_time>1) {
@@ -81,6 +86,21 @@ public class GridStage extends Stage {
                 grids[x][y].setColor(randomUtils.getRandomColor());
                 grids[x][y].setDraw(true);
             }
+        }
+
+        if(background_change_time>10)
+        {
+            background_change_time=0;
+            int x = randomUtils.getRandomInt()%2;
+            int y= randomUtils.getRandomInt()%2;
+
+            back_grids[x][y].setColor(randomUtils.getRandomColor());
+
+            back_grids[(x+randomUtils.getRandomInt())%2][(y+randomUtils.getRandomInt())%2].setColor(randomUtils.getRandomColor());
+
+
+
+
         }
 
 

@@ -17,6 +17,8 @@ public class Grid extends GameActor {
         this.time=0;
     }
 
+    
+
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
@@ -24,6 +26,11 @@ public class Grid extends GameActor {
 
         renderer.setAutoShapeType(true);
         renderer.begin();
+
+        renderer.setColor(Color.WHITE);
+        renderer.set(ShapeRenderer.ShapeType.Filled);
+        renderer.rect(x, y, width, height);
+
         renderer.setColor(Color.BLACK);
         renderer.set(ShapeRenderer.ShapeType.Line);
         renderer.rect(x, y, width, height);
