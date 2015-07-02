@@ -33,6 +33,7 @@ public class GridStage extends Stage {
         back_grids=new BackgroundGrid[2][2];
 
         renderer = new ShapeRenderer();
+        renderer.setProjectionMatrix(this.getCamera().combined);
 
         spawn_time=0;
         background_change_time=0;
