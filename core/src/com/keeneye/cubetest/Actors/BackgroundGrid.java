@@ -8,8 +8,11 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
  */
 public class BackgroundGrid extends GameActor {
 
+
+
     public BackgroundGrid(float x, float y, float width, float height, ShapeRenderer renderer) {
         super(x, y, width, height, renderer);
+
     }
 
     @Override

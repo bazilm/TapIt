@@ -32,5 +32,8 @@ public class GameActor extends Actor {
         this.color = color;
     }
 
-
+    @Override
+    public Color getColor() {
+        return color;
     }
+}
