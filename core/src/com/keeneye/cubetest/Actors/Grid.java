@@ -113,6 +113,7 @@ public class Grid extends GameActor {
                // Gdx.app.log("Grid", "Lost a Finger".concat(color.toString()).concat(" ").concat(back_color.toString()));
                 draw=false;
                 time=0;
+                AssetsLoader.wrongtap.play();
                 return false;
 
             }

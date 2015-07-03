@@ -10,12 +10,13 @@ import com.badlogic.gdx.audio.Sound;
 public class AssetsLoader {
 
     public static Music background;
-    public static Sound tap;
+    public static Sound tap,wrongtap;
 
 
     public static void load() {
 
         background = Gdx.audio.newMusic(Gdx.files.internal("background.mp3"));
         tap = Gdx.audio.newSound(Gdx.files.internal("tap.wav"));
+        wrongtap = Gdx.audio.newSound(Gdx.files.internal("wrongtap.wav"));
     }
 }
