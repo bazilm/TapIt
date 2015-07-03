@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.keeneye.cubetest.Utils.AssetsLoader;
 
 /**
  * Created by bazilm on 02-07-2015.
@@ -101,12 +102,17 @@ public class Grid extends GameActor {
             if(back_color==color)
             {
                // Gdx.app.log("Grid","Got a Cube");
+                draw=false;
+                time=0;
+                AssetsLoader.tap.play();
                 return true;
             }
 
 
             else {
                // Gdx.app.log("Grid", "Lost a Finger".concat(color.toString()).concat(" ").concat(back_color.toString()));
+                draw=false;
+                time=0;
                 return false;
 
             }

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.keeneye.cubetest.Screens.GridScreen;
+import com.keeneye.cubetest.Utils.AssetsLoader;
 
 public class CubeTest extends Game {
 	SpriteBatch batch;
@@ -13,6 +14,10 @@ public class CubeTest extends Game {
 	public void create () {
 
 		setScreen(new GridScreen());
+		AssetsLoader.load();
+		AssetsLoader.background.setLooping(true);
+		AssetsLoader.background.setVolume(0.3f);
+		AssetsLoader.background.play();
 	}
 
 

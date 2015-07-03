@@ -1,6 +1,7 @@
 package com.keeneye.cubetest.Stages;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -54,13 +55,13 @@ public class GridStage extends Stage {
         score=0;
         scoreFont=new BitmapFont(Gdx.files.internal("default.fnt"));
 
-
+        Color color = randomUtils.getRandomColor();
         for(int i=0;i<2;i++)
         {
             for(int j=0;j<2;j++)
             {
                 back_grids[i][j]=new BackgroundGrid(j*240,160+(i*240),240,240,renderer);
-                back_grids[i][j].setColor(randomUtils.getRandomColor());
+                back_grids[i][j].setColor(color);
                 addActor(back_grids[i][j]);
 
             }
@@ -71,19 +72,14 @@ public class GridStage extends Stage {
             for(int j=0;j<4;j++)
             {
                 grids[i][j] = new Grid(80*(j+1),160+(80*(i+1)),80,80,renderer);
+                grids[i][j].setBack_color(color);
                 addActor(grids[i][j]);
 
             }
 
         }
 
-        for(int i=0;i<2;i++)
-        {
-            for(int j=0;j<2;j++)
-            {
-                helperUtils.set_grid_back_color(grids,i,j,back_grids[i][j].getColor());
-            }
-        }
+
 
 
         Gdx.input.setInputProcessor(this);
@@ -99,7 +95,7 @@ public class GridStage extends Stage {
         background_change_time+=delta;
 
 
-        if(spawn_time>0.4) {
+        if(spawn_time>0.5) {
             spawn_time=0;
             int x = randomUtils.getRandomInt();
             int y = randomUtils.getRandomInt();
@@ -114,13 +110,22 @@ public class GridStage extends Stage {
             background_change_time=0;
             int x = randomUtils.getRandomInt()%2;
             int y= randomUtils.getRandomInt()%2;
-
-            back_grids[x][y].setColor(randomUtils.getRandomColor());
+            Color color = randomUtils.getRandomColor();
+            back_grids[x][y].setColor(color);
             helperUtils.set_grid_back_color(grids,x,y,back_grids[x][y].getColor());
 
-            back_grids[(x+randomUtils.getRandomInt())%2][(y+randomUtils.getRandomInt())%2].setColor(randomUtils.getRandomColor());
-            helperUtils.set_grid_back_color(grids,(x+randomUtils.getRandomInt())%2,(y+randomUtils.getRandomInt())%2,
-                back_grids[(x+randomUtils.getRandomInt())%2][(y+randomUtils.getRandomInt())%2].getColor());
+            int rnd= randomUtils.getRandomInt()%2;
+
+            if(rnd==0)
+            {
+                back_grids[(x+1)%2][y].setColor(color);
+                helperUtils.set_grid_back_color(grids,x,y,back_grids[x][y].getColor());
+            }
+            else
+            {
+                back_grids[x][(y+1)%2].setColor(color);
+                helperUtils.set_grid_back_color(grids,x,y,back_grids[x][y].getColor());
+            }
 
 
 
