@@ -119,12 +119,12 @@ public class GridStage extends Stage {
             if(rnd==0)
             {
                 back_grids[(x+1)%2][y].setColor(color);
-                helperUtils.set_grid_back_color(grids,x,y,color);
+                helperUtils.set_grid_back_color(grids,(x+1)%2,y,color);
             }
             else
             {
                 back_grids[x][(y+1)%2].setColor(color);
-                helperUtils.set_grid_back_color(grids,x,y,color);
+                helperUtils.set_grid_back_color(grids,x,(x+1)%2,color);
             }
 
 
