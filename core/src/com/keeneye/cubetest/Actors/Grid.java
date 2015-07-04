@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.keeneye.cubetest.Utils.AssetsLoader;
@@ -17,6 +18,9 @@ public class Grid extends GameActor {
     protected float time;
     protected Color back_color;
     protected Rectangle bound;
+    protected Circle clock;
+    protected boolean draw_clock;
+
 
 
     public Grid(float x, float y, float width, float height, ShapeRenderer renderer) {
@@ -24,6 +28,7 @@ public class Grid extends GameActor {
         this.time=0;
         this.back_color=null;
         bound=new Rectangle(x,y,width,height);
+        clock=new Circle(x+(width/2),y+(height/2),10);
         this.setBounds(x,y,width,height);
 
     }
@@ -57,6 +62,13 @@ public class Grid extends GameActor {
             renderer.setColor(color);
 
             renderer.rect(x, y, width, height);
+
+            if(draw_clock) {
+                renderer.set(ShapeRenderer.ShapeType.Line);
+                renderer.setColor(Color.WHITE);
+                renderer.circle(clock.x, clock.y, clock.radius);
+            }
+
             renderer.end();
         }
 
@@ -76,6 +88,7 @@ public class Grid extends GameActor {
         {
             time=0;
             draw=false;
+            draw_clock=false;
         }
     }
 
@@ -97,31 +110,42 @@ public class Grid extends GameActor {
 
     }
 
-    public boolean contains (Vector2 coords) {
+    public int score (Vector2 coords) {
 
             if (bound.contains(coords.x, coords.y)) {
 
                     if (back_color == color) {
                         // Gdx.app.log("Grid","Got a Cube");
                         draw = false;
+                        draw_clock=false;
+                        int score=(int)(2-time)*10;
                         time = 0;
                         AssetsLoader.tap.play();
-                        return true;
+                        return score+10;
                     } else {
                         // Gdx.app.log("Grid", "Lost a Finger".concat(color.toString()).concat(" ").concat(back_color.toString()));
                         draw = false;
+                        draw_clock=false;
                         time = 0;
                         AssetsLoader.wrongtap.play();
-                        return false;
+                        return -10;
 
                     }
 
 
             }
                 else
-                return false;
+                return 0;
 
         }
+
+    public boolean isDraw_clock() {
+        return draw_clock;
+    }
+
+    public void setDraw_clock(boolean draw_clock) {
+        this.draw_clock = draw_clock;
+    }
 
 
 }

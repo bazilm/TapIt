@@ -97,24 +97,28 @@ public class GridStage extends Stage {
 
         if(spawn_time>0.5) {
             spawn_time=0;
-            int x = randomUtils.getRandomInt();
-            int y = randomUtils.getRandomInt();
+            int x = randomUtils.getRandomInt(4);
+            int y = randomUtils.getRandomInt(4);
             if (!grids[x][y].isDraw()) {
                 grids[x][y].setColor(randomUtils.getRandomColor());
                 grids[x][y].setDraw(true);
+
+                if(randomUtils.getRandomBoolean(16))
+                    grids[x][y].setDraw_clock(true);
+
             }
         }
 
         if(background_change_time>10)
         {
             background_change_time=0;
-            int x = randomUtils.getRandomInt()%2;
-            int y= randomUtils.getRandomInt()%2;
+            int x = randomUtils.getRandomInt(2);
+            int y= randomUtils.getRandomInt(2);
             Color color = randomUtils.getRandomColor();
             back_grids[x][y].setColor(color);
             helperUtils.set_grid_back_color(grids,x,y,color);
 
-            int rnd= randomUtils.getRandomInt()%2;
+            int rnd= randomUtils.getRandomInt(2);
 
             if(rnd==0)
             {
@@ -153,23 +157,10 @@ public class GridStage extends Stage {
         {
             for(int j=0;j<4;j++)
             {
-                if(grids[i][j].contains(touchPoint))
-                {
-                    success = true;
-                    break;
-                }
-
+               score+=grids[i][j].score(touchPoint);
             }
-            if(success)
-                break;
+
         }
-
-        if(success)
-            score+=10;
-
-        else
-            score-=10;
-
 
         Gdx.app.log("Score:",Integer.toString(score));
 

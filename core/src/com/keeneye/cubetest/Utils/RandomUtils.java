@@ -27,9 +27,20 @@ public class RandomUtils {
 
     }
 
-    public int getRandomInt()
+    public int getRandomInt(int n)
     {
-        return RND.nextInt(4);
+        return RND.nextInt(n);
+    }
+
+    public boolean getRandomBoolean(int n)
+    {
+       int r = getRandomInt(n);
+       if(r==0)
+           return true;
+        else
+           return false;
+
+
     }
 
 }
