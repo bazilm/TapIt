@@ -1,6 +1,8 @@
 package com.keeneye.cubetest.Actors;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
@@ -49,7 +51,7 @@ public class Grid extends GameActor {
 
         if(draw) {
 
-
+            Gdx.gl.glEnable(GL20.GL_BLEND);
             renderer.begin();
             renderer.set(ShapeRenderer.ShapeType.Filled);
             renderer.setColor(color);
@@ -95,34 +97,31 @@ public class Grid extends GameActor {
 
     }
 
-    public boolean contains (Vector2 coords)
-    {
-        if(bound.contains(coords.x,coords.y))
-        {
-            if(back_color==color)
-            {
-               // Gdx.app.log("Grid","Got a Cube");
-                draw=false;
-                time=0;
-                AssetsLoader.tap.play();
-                return true;
+    public boolean contains (Vector2 coords) {
+
+            if (bound.contains(coords.x, coords.y)) {
+
+                    if (back_color == color) {
+                        // Gdx.app.log("Grid","Got a Cube");
+                        draw = false;
+                        time = 0;
+                        AssetsLoader.tap.play();
+                        return true;
+                    } else {
+                        // Gdx.app.log("Grid", "Lost a Finger".concat(color.toString()).concat(" ").concat(back_color.toString()));
+                        draw = false;
+                        time = 0;
+                        AssetsLoader.wrongtap.play();
+                        return false;
+
+                    }
+
+
             }
-
-
-            else {
-               // Gdx.app.log("Grid", "Lost a Finger".concat(color.toString()).concat(" ").concat(back_color.toString()));
-                draw=false;
-                time=0;
-                AssetsLoader.wrongtap.play();
+                else
                 return false;
-
-            }
 
         }
 
-        else
-            return false;
-
-    }
 
 }

@@ -1,5 +1,7 @@
 package com.keeneye.cubetest.Actors;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
@@ -22,13 +24,19 @@ public class BackgroundGrid extends GameActor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+
         super.draw(batch, parentAlpha);
+        Gdx.gl.glEnable(GL20.GL_BLEND);
         renderer.setAutoShapeType(true);
         renderer.begin();
         renderer.setColor(color);
         renderer.set(ShapeRenderer.ShapeType.Filled);
         renderer.rect(x, y, width, height);
         renderer.end();
+
+
+
+
 
 
 

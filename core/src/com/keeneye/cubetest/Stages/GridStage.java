@@ -112,19 +112,19 @@ public class GridStage extends Stage {
             int y= randomUtils.getRandomInt()%2;
             Color color = randomUtils.getRandomColor();
             back_grids[x][y].setColor(color);
-            helperUtils.set_grid_back_color(grids,x,y,back_grids[x][y].getColor());
+            helperUtils.set_grid_back_color(grids,x,y,color);
 
             int rnd= randomUtils.getRandomInt()%2;
 
             if(rnd==0)
             {
                 back_grids[(x+1)%2][y].setColor(color);
-                helperUtils.set_grid_back_color(grids,x,y,back_grids[x][y].getColor());
+                helperUtils.set_grid_back_color(grids,x,y,color);
             }
             else
             {
                 back_grids[x][(y+1)%2].setColor(color);
-                helperUtils.set_grid_back_color(grids,x,y,back_grids[x][y].getColor());
+                helperUtils.set_grid_back_color(grids,x,y,color);
             }
 
 
