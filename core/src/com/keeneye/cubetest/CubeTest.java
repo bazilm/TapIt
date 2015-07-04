@@ -13,12 +13,16 @@ public class CubeTest extends Game {
 	@Override
 	public void create () {
 
-		setScreen(new GridScreen());
+		setScreen(new GridScreen(this));
 		AssetsLoader.load();
 		AssetsLoader.background.setLooping(true);
 		AssetsLoader.background.setVolume(0.3f);
 		AssetsLoader.background.play();
 	}
 
-
+	@Override
+	public void dispose() {
+		super.dispose();
+		AssetsLoader.dispose();
+	}
 }

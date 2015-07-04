@@ -22,4 +22,13 @@ public class AssetsLoader {
         wrongtap = Gdx.audio.newSound(Gdx.files.internal("wrongtap.wav"));
         frame= new Texture(Gdx.files.internal("frame.png"));
     }
+
+    public static void dispose()
+    {
+
+        background.dispose();
+        tap.dispose();
+        wrongtap.dispose();
+        frame.dispose();
+    }
 }

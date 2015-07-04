@@ -1,6 +1,7 @@
 package com.keeneye.cubetest.Stages;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -12,6 +13,8 @@ import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import com.keeneye.cubetest.Actors.BackgroundGrid;
 import com.keeneye.cubetest.Actors.Grid;
+import com.keeneye.cubetest.CubeTest;
+import com.keeneye.cubetest.Screens.OverScreen;
 import com.keeneye.cubetest.Utils.HelperUtils;
 import com.keeneye.cubetest.Utils.RandomUtils;
 
@@ -20,23 +23,39 @@ import com.keeneye.cubetest.Utils.RandomUtils;
  */
 public class GridStage extends Stage {
 
+    private CubeTest game;
+
     private Grid grids[][];
     private BackgroundGrid back_grids[][];
     private ShapeRenderer renderer;
     private RandomUtils randomUtils;
     private HelperUtils helperUtils;
-    private float spawn_time,background_change_time;
+    private float spawn_time,background_change_time,second_tracker;
+    private int game_time;
 
     private int score;
     private BitmapFont scoreFont;
 
     private Batch batch;
 
+    private Preferences preferences;
 
-    public GridStage(int width,int height)
+
+    public GridStage(int width,int height,CubeTest game)
     {
 
         super(new ScalingViewport(Scaling.stretch,width,height,new OrthographicCamera(width,height)));
+
+        this.game=game;
+
+        preferences = Gdx.app.getPreferences("CubeTest");
+
+        if(!preferences.contains("highscore"))
+        {
+            preferences.putInteger("highscore",0);
+            preferences.flush();
+        }
+
         randomUtils=new RandomUtils();
         helperUtils=new HelperUtils();
 
@@ -48,6 +67,8 @@ public class GridStage extends Stage {
 
         spawn_time=0;
         background_change_time=0;
+        second_tracker=0;
+        game_time=60;
 
         batch = getBatch();
         batch.setProjectionMatrix(getCamera().combined);
@@ -71,9 +92,10 @@ public class GridStage extends Stage {
         {
             for(int j=0;j<4;j++)
             {
-                grids[i][j] = new Grid(80*(j+1),160+(80*(i+1)),80,80,renderer);
+                grids[i][j] = new Grid(80*(j+1),160+(80*(i+1)),80,80,renderer,this);
                 grids[i][j].setBack_color(color);
                 addActor(grids[i][j]);
+
 
             }
 
@@ -87,12 +109,36 @@ public class GridStage extends Stage {
 
     }
 
+
+
     @Override
     public void act(float delta) {
         super.act(delta);
 
         spawn_time+=delta;
         background_change_time+=delta;
+        second_tracker+=delta;
+        Gdx.app.log("GridStage","Act");
+        if(game_time<=0)
+        {
+
+            int highscore = preferences.getInteger("highscore");
+
+            if(score>highscore)
+            {
+                preferences.putInteger("highscore",score);
+                preferences.flush();
+            }
+            game.setScreen(new OverScreen(game,this,score));
+
+
+        }
+
+        if(second_tracker>=1) {
+            game_time--;
+
+            second_tracker = 0;
+        }
 
 
         if(spawn_time>0.5) {
@@ -103,7 +149,7 @@ public class GridStage extends Stage {
                 grids[x][y].setColor(randomUtils.getRandomColor());
                 grids[x][y].setDraw(true);
 
-                if(randomUtils.getRandomBoolean(16))
+                if(randomUtils.getRandomBoolean(4))
                     grids[x][y].setDraw_clock(true);
 
             }
@@ -143,6 +189,7 @@ public class GridStage extends Stage {
         super.draw();
         batch.begin();
         scoreFont.draw(batch,Integer.toString(score),getWidth()-50,getHeight()-50);
+        scoreFont.draw(batch,Integer.toString(game_time),getWidth()/2,getHeight()-50);
         batch.end();
     }
 
@@ -165,6 +212,14 @@ public class GridStage extends Stage {
         Gdx.app.log("Score:",Integer.toString(score));
 
         return super.touchDown(screenX, screenY, pointer, button);
+    }
+
+    public void setGame_time(int game_time) {
+        this.game_time = game_time;
+    }
+
+    public int getGame_time() {
+        return game_time;
     }
 
 }

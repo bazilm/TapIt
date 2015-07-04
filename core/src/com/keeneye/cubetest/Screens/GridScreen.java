@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.keeneye.cubetest.CubeTest;
 import com.keeneye.cubetest.Stages.GridStage;
 
 /**
@@ -14,16 +15,26 @@ public class GridScreen implements Screen {
     private static final int WIDTH = 480;
     private static final int HEIGHT = 800;
 
+    private CubeTest game;
+
     private GridStage stage;
     private Batch batch;
 
 
+    public GridScreen(CubeTest game)
+    {
+        this.game=game;
 
+    }
+
+    public GridStage getStage() {
+        return stage;
+    }
 
     @Override
     public void show() {
 
-        stage = new GridStage(WIDTH,HEIGHT);
+        stage = new GridStage(WIDTH,HEIGHT,game);
         batch = stage.getBatch();
 
 

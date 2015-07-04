@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.keeneye.cubetest.Stages.GridStage;
 import com.keeneye.cubetest.Utils.AssetsLoader;
 
 /**
@@ -20,16 +21,18 @@ public class Grid extends GameActor {
     protected Rectangle bound;
     protected Circle clock;
     protected boolean draw_clock;
+    private GridStage gridStage;
 
 
 
-    public Grid(float x, float y, float width, float height, ShapeRenderer renderer) {
+    public Grid(float x, float y, float width, float height, ShapeRenderer renderer,GridStage gridStage) {
         super(x, y, width, height, renderer);
         this.time=0;
         this.back_color=null;
         bound=new Rectangle(x,y,width,height);
         clock=new Circle(x+(width/2),y+(height/2),10);
         this.setBounds(x,y,width,height);
+        this.gridStage=gridStage;
 
     }
 
@@ -116,9 +119,13 @@ public class Grid extends GameActor {
 
                     if (back_color == color) {
                         // Gdx.app.log("Grid","Got a Cube");
+
+                        if(draw_clock==true)
+                            gridStage.setGame_time(gridStage.getGame_time()+8);
+
+                        int score=(int)(2-time)*10;
                         draw = false;
                         draw_clock=false;
-                        int score=(int)(2-time)*10;
                         time = 0;
                         AssetsLoader.tap.play();
                         return score+10;
