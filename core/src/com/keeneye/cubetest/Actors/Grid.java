@@ -20,6 +20,7 @@ public class Grid extends GameActor {
     protected Color back_color;
     protected Rectangle bound;
     protected Circle clock;
+    protected Circle circle;
     protected boolean draw_clock;
     private GridStage gridStage;
 
@@ -31,6 +32,7 @@ public class Grid extends GameActor {
         this.back_color=null;
         bound=new Rectangle(x,y,width,height);
         clock=new Circle(x+(width/2),y+(height/2),10);
+        circle = new Circle(x+(width/2),y+(height/2),20);
         this.setBounds(x,y,width,height);
         this.gridStage=gridStage;
 
@@ -50,12 +52,12 @@ public class Grid extends GameActor {
         renderer.set(ShapeRenderer.ShapeType.Filled);
         renderer.rect(x, y, width, height);
 
-        renderer.setColor(Color.BLACK);
+        /*renderer.setColor(Color.BLACK);
         renderer.set(ShapeRenderer.ShapeType.Line);
         renderer.rect(x, y, width, height);
+
+        */
         renderer.end();
-
-
 
         if(draw) {
 
@@ -64,12 +66,12 @@ public class Grid extends GameActor {
             renderer.set(ShapeRenderer.ShapeType.Filled);
             renderer.setColor(color);
 
-            renderer.rect(x, y, width, height);
+            renderer.circle(circle.x, circle.y,circle.radius);
 
             if(draw_clock) {
                 renderer.set(ShapeRenderer.ShapeType.Line);
                 renderer.setColor(Color.WHITE);
-                renderer.circle(clock.x, clock.y, clock.radius);
+                renderer.circle(clock.x, clock.y, clock.radius,60);
             }
 
             renderer.end();
@@ -121,7 +123,7 @@ public class Grid extends GameActor {
                         // Gdx.app.log("Grid","Got a Cube");
 
                         if(draw_clock==true)
-                            gridStage.setGame_time(gridStage.getGame_time()+8);
+                            gridStage.setGame_time(gridStage.getGame_time()+4);
 
                         int score=(int)(2-time)*10;
                         draw = false;

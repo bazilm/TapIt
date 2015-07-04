@@ -73,28 +73,17 @@ public class OverScreen implements Screen{
         highScore = new Label("High Score: " +Integer.toString(preferences.getInteger("highscore")),_skin );
         highScore.setFontScale(1f);
         resume = new TextButton("RETRY", _skin);
-
-
-        options = new TextButton("OPTIONS", _skin);
-
         back = new TextButton("HOME",_skin);
 
         table.add(title).center().pad(2f);
         table.row().height(75);
         table.add(highScore).center().pad(5f);
         table.row().height(75);
-        table.add(resume).center().width(300).pad(5f);
-        table.row().height(75);
-        table.add(back).center().width(300).pad(5f);
-        table.row().height(75);
-        table.add(options).center().width(300).pad(5f);
-
-
+        table.add(resume).center().width(100).pad(5f);
+        table.row().height(50);
+        table.add(back).center().width(100).pad(5f);
 
         table.setVisible(true);
-
-
-
 
         stage.addActor(table);
         Gdx.input.setInputProcessor(stage);
@@ -125,12 +114,14 @@ public class OverScreen implements Screen{
         stage.act(delta);
         stage.draw();
 
-       /* if(resume.isChecked())
+        if(resume.isChecked())
         {
+            Gdx.app.log("Over","Change of Screen");
             this.dispose();
-            game.setScreen(new GameScreen(game));
+            game.setScreen(new GridScreen(game));
+
         }
-*/
+
 
        /* else if(back.isChecked())
         {

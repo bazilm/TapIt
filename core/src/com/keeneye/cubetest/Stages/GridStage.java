@@ -40,6 +40,8 @@ public class GridStage extends Stage {
 
     private Preferences preferences;
 
+    private boolean newScreen;
+
 
     public GridStage(int width,int height,CubeTest game)
     {
@@ -70,11 +72,14 @@ public class GridStage extends Stage {
         second_tracker=0;
         game_time=60;
 
+        newScreen =false;
+
         batch = getBatch();
         batch.setProjectionMatrix(getCamera().combined);
 
         score=0;
-        scoreFont=new BitmapFont(Gdx.files.internal("default.fnt"));
+        scoreFont=new BitmapFont(Gdx.files.internal("skin/default.fnt"));
+        scoreFont.setColor(0,0,0,1);
 
         Color color = randomUtils.getRandomColor();
         for(int i=0;i<2;i++)
@@ -118,68 +123,66 @@ public class GridStage extends Stage {
         spawn_time+=delta;
         background_change_time+=delta;
         second_tracker+=delta;
-        Gdx.app.log("GridStage","Act");
-        if(game_time<=0)
-        {
+        //Gdx.app.log("GridStage","Act");
+        if(!newScreen) {
+            if (game_time <= 0) {
 
-            int highscore = preferences.getInteger("highscore");
+                int highscore = preferences.getInteger("highscore");
 
-            if(score>highscore)
-            {
-                preferences.putInteger("highscore",score);
-                preferences.flush();
-            }
-            game.setScreen(new OverScreen(game,this,score));
+                if (score > highscore) {
+                    preferences.putInteger("highscore", score);
+                    preferences.flush();
+                }
+                //this.dispose();
+                newScreen = true;
+                game.setScreen(new OverScreen(game, this, score));
 
-
-        }
-
-        if(second_tracker>=1) {
-            game_time--;
-
-            second_tracker = 0;
-        }
-
-
-        if(spawn_time>0.5) {
-            spawn_time=0;
-            int x = randomUtils.getRandomInt(4);
-            int y = randomUtils.getRandomInt(4);
-            if (!grids[x][y].isDraw()) {
-                grids[x][y].setColor(randomUtils.getRandomColor());
-                grids[x][y].setDraw(true);
-
-                if(randomUtils.getRandomBoolean(4))
-                    grids[x][y].setDraw_clock(true);
 
             }
         }
 
-        if(background_change_time>10)
-        {
-            background_change_time=0;
-            int x = randomUtils.getRandomInt(2);
-            int y= randomUtils.getRandomInt(2);
-            Color color = randomUtils.getRandomColor();
-            back_grids[x][y].setColor(color);
-            helperUtils.set_grid_back_color(grids,x,y,color);
 
-            int rnd= randomUtils.getRandomInt(2);
+            if (second_tracker >= 1) {
+                game_time--;
 
-            if(rnd==0)
-            {
-                back_grids[(x+1)%2][y].setColor(color);
-                helperUtils.set_grid_back_color(grids,(x+1)%2,y,color);
-            }
-            else
-            {
-                back_grids[x][(y+1)%2].setColor(color);
-                helperUtils.set_grid_back_color(grids,x,(x+1)%2,color);
+                second_tracker = 0;
             }
 
 
+            if (spawn_time > 0.4) {
+                spawn_time = 0;
+                int x = randomUtils.getRandomInt(4);
+                int y = randomUtils.getRandomInt(4);
+                if (!grids[x][y].isDraw()) {
+                    grids[x][y].setColor(randomUtils.getRandomColor());
+                    grids[x][y].setDraw(true);
 
-        }
+                    if (randomUtils.getRandomBoolean(4))
+                        grids[x][y].setDraw_clock(true);
+
+                }
+            }
+
+            if (background_change_time > 10) {
+                background_change_time = 0;
+                int x = randomUtils.getRandomInt(2);
+                int y = randomUtils.getRandomInt(2);
+                Color color = randomUtils.getRandomColor();
+                back_grids[x][y].setColor(color);
+                helperUtils.set_grid_back_color(grids, x, y, color);
+
+                int rnd = randomUtils.getRandomInt(2);
+
+                if (rnd == 0) {
+                    back_grids[(x + 1) % 2][y].setColor(color);
+                    helperUtils.set_grid_back_color(grids, (x + 1) % 2, y, color);
+                } else {
+                    back_grids[x][(y + 1) % 2].setColor(color);
+                    helperUtils.set_grid_back_color(grids, x, (x + 1) % 2, color);
+                }
+
+
+            }
 
 
     }
@@ -222,4 +225,11 @@ public class GridStage extends Stage {
         return game_time;
     }
 
+    @Override
+    public void dispose() {
+        super.dispose();
+        renderer.dispose();
+        scoreFont.dispose();
+        batch.dispose();
+    }
 }

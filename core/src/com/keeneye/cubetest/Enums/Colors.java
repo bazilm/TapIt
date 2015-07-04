@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.Color;
  */
 public enum Colors {
 
-    BLUE(new Color(0,0,0.8f,0.7f)),RED(new Color(0.9f,0,0,0.8f)),GREEN(new Color(0,0.9f,0,0.7f)),YELLOW(new Color(1,1,0,0.7f));
+    BLUE(new Color(0,0,0.8f,0.7f)),RED(new Color(0.9f,0,0,0.8f)),GREEN(new Color(0,0.8f,0,0.7f)),YELLOW(new Color(1,1,0,0.7f));
 
     private Color color;
 

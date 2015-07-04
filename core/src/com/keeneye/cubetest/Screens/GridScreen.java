@@ -23,6 +23,12 @@ public class GridScreen implements Screen {
 
     public GridScreen(CubeTest game)
     {
+        init(game);
+
+    }
+
+    public void init(CubeTest game)
+    {
         this.game=game;
 
     }
