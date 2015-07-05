@@ -48,15 +48,12 @@ public class GridScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0.9f,0.9f,0.9f,1);
+        Gdx.gl.glClearColor(0.95f,0.95f,0.95f,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(delta);
         stage.draw();
 
-       /* batch.begin();
-        batch.draw(AssetsLoader.frame,0,0,stage.getWidth(),stage.getHeight());
-        batch.end();
-*/
+      
     }
 
     @Override

@@ -11,9 +11,9 @@ public class HelperUtils {
     public static void set_grid_back_color(Grid[][] grids,int i,int j,Color color)
     {
 
-        for(int a = i*2;a<(i*2)+2;a++)
+        for(int a = i*4;a<(i*4)+4;a++)
         {
-            for(int b=j*2;b<(j*2)+2;b++)
+            for(int b=j*3;b<(j*3)+3;b++)
             {
              grids[a][b].setBack_color(color);
             }

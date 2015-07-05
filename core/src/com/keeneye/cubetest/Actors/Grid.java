@@ -17,23 +17,32 @@ import com.keeneye.cubetest.Utils.AssetsLoader;
 public class Grid extends GameActor {
 
     protected float time;
-    protected Color back_color;
+    protected Color back_color,alpha_back_color;
     protected Rectangle bound;
     protected Circle clock;
     protected Circle circle;
+    protected Rectangle special;
+    protected boolean draw_special;
     protected boolean draw_clock;
     private GridStage gridStage;
 
 
 
+
     public Grid(float x, float y, float width, float height, ShapeRenderer renderer,GridStage gridStage) {
         super(x, y, width, height, renderer);
-        this.time=0;
-        this.back_color=null;
+        time=0;
+        back_color=null;
+        alpha_back_color=new Color();
         bound=new Rectangle(x,y,width,height);
         clock=new Circle(x+(width/2),y+(height/2),10);
         circle = new Circle(x+(width/2),y+(height/2),20);
-        this.setBounds(x,y,width,height);
+        special= new Rectangle(x+10,y+10,40,40);
+
+        draw_special=false;
+        draw_clock=false;
+
+        setBounds(x, y, width, height);
         this.gridStage=gridStage;
 
     }
@@ -45,26 +54,32 @@ public class Grid extends GameActor {
         super.draw(batch, parentAlpha);
 
 
-        renderer.setAutoShapeType(true);
+        Gdx.gl.glEnable(GL20.GL_BLEND);
         renderer.begin();
-
-        renderer.setColor(Color.WHITE);
         renderer.set(ShapeRenderer.ShapeType.Filled);
-        renderer.rect(x, y, width, height);
+        renderer.setColor(Color.WHITE);
+        renderer.rect(x,y,width,height);
+
+        renderer.setColor(alpha_back_color);
+        renderer.rect(x,y,width,height);
 
         /*renderer.setColor(Color.BLACK);
         renderer.set(ShapeRenderer.ShapeType.Line);
         renderer.rect(x, y, width, height);
 
         */
-        renderer.end();
+
 
         if(draw) {
 
-            Gdx.gl.glEnable(GL20.GL_BLEND);
-            renderer.begin();
+
+
             renderer.set(ShapeRenderer.ShapeType.Filled);
+
+
+
             renderer.setColor(color);
+
 
             renderer.circle(circle.x, circle.y,circle.radius);
 
@@ -74,8 +89,16 @@ public class Grid extends GameActor {
                 renderer.circle(clock.x, clock.y, clock.radius,60);
             }
 
-            renderer.end();
+            if(draw_special)
+            {
+                renderer.set(ShapeRenderer.ShapeType.Line);
+                renderer.setColor(color);
+                renderer.rect(special.x,special.y,special.width,special.height);
+            }
+
+
         }
+        renderer.end();
 
     }
 
@@ -94,6 +117,7 @@ public class Grid extends GameActor {
             time=0;
             draw=false;
             draw_clock=false;
+            draw_special=false;
         }
     }
 
@@ -111,6 +135,7 @@ public class Grid extends GameActor {
 
     public void setBack_color(Color back_color) {
         this.back_color = back_color;
+        alpha_back_color.set(back_color.r,back_color.g,back_color.b,0.05f);
        // Gdx.app.log("Grid","Back color set to ".concat(back_color.toString()));
 
     }
@@ -156,5 +181,7 @@ public class Grid extends GameActor {
         this.draw_clock = draw_clock;
     }
 
-
+    public void setDraw_special(boolean draw_special) {
+        this.draw_special = draw_special;
+    }
 }

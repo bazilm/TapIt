@@ -61,7 +61,7 @@ public class GridStage extends Stage {
         randomUtils=new RandomUtils();
         helperUtils=new HelperUtils();
 
-        grids = new Grid[4][4];
+        grids = new Grid[8][6];
         back_grids=new BackgroundGrid[2][2];
 
         renderer = new ShapeRenderer();
@@ -86,18 +86,18 @@ public class GridStage extends Stage {
         {
             for(int j=0;j<2;j++)
             {
-                back_grids[i][j]=new BackgroundGrid(j*240,160+(i*240),240,240,renderer);
+                back_grids[i][j]=new BackgroundGrid(j*240,120+(i*280),240,280,renderer);
                 back_grids[i][j].setColor(color);
                 addActor(back_grids[i][j]);
 
             }
         }
 
-        for(int i=0;i<4;i++)
+        for(int i=0;i<8;i++)
         {
-            for(int j=0;j<4;j++)
+            for(int j=0;j<6;j++)
             {
-                grids[i][j] = new Grid(80*(j+1),160+(80*(i+1)),80,80,renderer,this);
+                grids[i][j] = new Grid(60*(j+1),160+(60*(i)),60,60,renderer,this);
                 grids[i][j].setBack_color(color);
                 addActor(grids[i][j]);
 
@@ -151,14 +151,17 @@ public class GridStage extends Stage {
 
             if (spawn_time > 0.4) {
                 spawn_time = 0;
-                int x = randomUtils.getRandomInt(4);
-                int y = randomUtils.getRandomInt(4);
+                int x = randomUtils.getRandomInt(8);
+                int y = randomUtils.getRandomInt(6);
                 if (!grids[x][y].isDraw()) {
                     grids[x][y].setColor(randomUtils.getRandomColor());
                     grids[x][y].setDraw(true);
 
-                    if (randomUtils.getRandomBoolean(4))
+                    if (randomUtils.getRandomBoolean(8))
                         grids[x][y].setDraw_clock(true);
+
+                    if (randomUtils.getRandomBoolean(16))
+                        grids[x][y].setDraw_special(true);
 
                 }
             }
@@ -178,7 +181,7 @@ public class GridStage extends Stage {
                     helperUtils.set_grid_back_color(grids, (x + 1) % 2, y, color);
                 } else {
                     back_grids[x][(y + 1) % 2].setColor(color);
-                    helperUtils.set_grid_back_color(grids, x, (x + 1) % 2, color);
+                    helperUtils.set_grid_back_color(grids, x, (y + 1) % 2, color);
                 }
 
 
@@ -203,9 +206,9 @@ public class GridStage extends Stage {
         boolean success=false;
         Vector2 touchPoint = this.screenToStageCoordinates(new Vector2(screenX,screenY));
 
-        for(int i=0;i<4;i++)
+        for(int i=0;i<8;i++)
         {
-            for(int j=0;j<4;j++)
+            for(int j=0;j<6;j++)
             {
                score+=grids[i][j].score(touchPoint);
             }
