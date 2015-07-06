@@ -2,7 +2,6 @@ package com.keeneye.cubetest.Stages;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -14,9 +13,13 @@ import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import com.keeneye.cubetest.Actors.BackgroundGrid;
 import com.keeneye.cubetest.Actors.Grid;
 import com.keeneye.cubetest.CubeTest;
+import com.keeneye.cubetest.Enums.Colors;
 import com.keeneye.cubetest.Screens.OverScreen;
+import com.keeneye.cubetest.Tweens.GameActorTween;
 import com.keeneye.cubetest.Utils.HelperUtils;
 import com.keeneye.cubetest.Utils.RandomUtils;
+
+import aurelienribon.tweenengine.Tween;
 
 /**
  * Created by bazilm on 02-07-2015.
@@ -85,13 +88,16 @@ public class GridStage extends Stage {
         scoreFont=new BitmapFont(Gdx.files.internal("skin/default.fnt"));
         scoreFont.setColor(0,0,0,1);
 
-        Color color = randomUtils.getRandomColor();
+        Tween.registerAccessor(Grid.class, new GameActorTween());
+
+        Colors color = randomUtils.getRandomColor();
         for(int i=0;i<2;i++)
         {
             for(int j=0;j<2;j++)
             {
                 back_grids[i][j]=new BackgroundGrid(j*240,120+(i*280),240,280,renderer);
-                back_grids[i][j].setColor(color);
+                back_grids[i][j].setColor(color.getColor());
+                back_grids[i][j].setColor_texture(color.getColor_texture());
                 addActor(back_grids[i][j]);
 
             }
@@ -102,7 +108,8 @@ public class GridStage extends Stage {
             for(int j=0;j<6;j++)
             {
                 grids[i][j] = new Grid(60*(j+1),160+(60*(i)),60,60,renderer,this);
-                grids[i][j].setBack_color(color);
+                grids[i][j].setBack_color(color.getColor());
+
                 addActor(grids[i][j]);
 
 
@@ -160,14 +167,21 @@ public class GridStage extends Stage {
                 int x = randomUtils.getRandomInt(8);
                 int y = randomUtils.getRandomInt(6);
                 if (!grids[x][y].isDraw()) {
-                    grids[x][y].setColor(randomUtils.getRandomColor());
+
+                    Colors color = randomUtils.getRandomColor();
+                    grids[x][y].setColor(color.getColor());
+                    grids[x][y].setColor_texture(color.getColor_texture());
                     grids[x][y].setDraw(true);
 
-                    if (randomUtils.getRandomBoolean(8))
+                    if (randomUtils.getRandomBoolean(8)) {
+                        grids[x][y].setClock_texture(color.getClock_texture());
                         grids[x][y].setDraw_clock(true);
+                    }
 
-                    if (randomUtils.getRandomBoolean(12))
+                    if (randomUtils.getRandomBoolean(12)) {
+                        grids[x][y].setSpecial_texture(color.getSpecial_texture());
                         grids[x][y].setDraw_special(true);
+                    }
 
                 }
             }
@@ -176,17 +190,20 @@ public class GridStage extends Stage {
                 background_change_time = 0;
                 int x = randomUtils.getRandomInt(2);
                 int y = randomUtils.getRandomInt(2);
-                Color color = randomUtils.getRandomColor();
-                back_grids[x][y].setColor(color);
+                Colors color = randomUtils.getRandomColor();
+                back_grids[x][y].setColor(color.getColor());
+                back_grids[x][y].setColor_texture(color.getColor_texture());
                 helperUtils.set_grid_back_color(grids, x, y, color);
 
                 int rnd = randomUtils.getRandomInt(2);
 
                 if (rnd == 0) {
-                    back_grids[(x + 1) % 2][y].setColor(color);
+                    back_grids[(x + 1) % 2][y].setColor(color.getColor());
+                    back_grids[(x + 1) % 2][y].setColor_texture(color.getColor_texture());
                     helperUtils.set_grid_back_color(grids, (x + 1) % 2, y, color);
                 } else {
-                    back_grids[x][(y + 1) % 2].setColor(color);
+                    back_grids[x][(y + 1) % 2].setColor(color.getColor());
+                    back_grids[x][(y + 1) % 2].setColor_texture(color.getColor_texture());
                     helperUtils.set_grid_back_color(grids, x, (y + 1) % 2, color);
                 }
 

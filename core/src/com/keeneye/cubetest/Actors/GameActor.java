@@ -18,6 +18,7 @@ public class GameActor extends Actor {
     protected ShapeRenderer renderer;
     protected Color color;
 
+
     protected boolean draw;
 
     protected TweenManager alphaManager;
@@ -32,7 +33,8 @@ public class GameActor extends Actor {
         this.color=null;
         this.draw=false;
 
-        Tween.registerAccessor(this.getClass(), new GameActorTween());
+
+
         alphaManager =new TweenManager();
 
     }
@@ -42,6 +44,7 @@ public class GameActor extends Actor {
     @Override
     public void setColor(Color color) {
         this.color=color;
+
 
 
     }

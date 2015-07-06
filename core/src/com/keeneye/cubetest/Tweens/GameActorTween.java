@@ -1,19 +1,19 @@
 package com.keeneye.cubetest.Tweens;
 
-import com.keeneye.cubetest.Actors.GameActor;
+import com.keeneye.cubetest.Actors.Grid;
 
 import aurelienribon.tweenengine.TweenAccessor;
 
 /**
  * Created by bazilm on 06-07-2015.
  */
-public class GameActorTween implements TweenAccessor<GameActor> {
+public class GameActorTween implements TweenAccessor<Grid> {
 
 
     public static final int ALPHA = 1;
 
     @Override
-    public int getValues(GameActor target, int tweenType, float[] returnValues) {
+    public int getValues(Grid target, int tweenType, float[] returnValues) {
 
         switch(tweenType)
         {
@@ -30,7 +30,7 @@ public class GameActorTween implements TweenAccessor<GameActor> {
     }
 
     @Override
-    public void setValues(GameActor target, int tweenType, float[] newValues) {
+    public void setValues(Grid target, int tweenType, float[] newValues) {
 
         switch(tweenType)
         {

@@ -1,14 +1,10 @@
 package com.keeneye.cubetest.Actors;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.keeneye.cubetest.Tweens.GameActorTween;
-
-import aurelienribon.tweenengine.Tween;
-import aurelienribon.tweenengine.TweenEquations;
 
 /**
  * Created by bazilm on 02-07-2015.
@@ -16,9 +12,14 @@ import aurelienribon.tweenengine.TweenEquations;
 public class BackgroundGrid extends GameActor {
 
 
+    private Pixmap pixmap;
+    private Texture color_texture;
+
+
 
     public BackgroundGrid(float x, float y, float width, float height, ShapeRenderer renderer) {
         super(x, y, width, height, renderer);
+
 
     }
 
@@ -33,32 +34,19 @@ public class BackgroundGrid extends GameActor {
     public void draw(Batch batch, float parentAlpha) {
 
         super.draw(batch, parentAlpha);
-        Gdx.gl.glEnable(GL20.GL_BLEND);
-        alphaManager.update(Gdx.graphics.getDeltaTime());
-        renderer.setAutoShapeType(true);
-        renderer.begin();
-        renderer.setColor(color);
-        renderer.set(ShapeRenderer.ShapeType.Filled);
-        renderer.rect(x, y, width, height);
-        renderer.end();
+        batch.draw(color_texture,x,y,width,height);
 
 
-
-
-
-
-
-    }
+      }
 
     @Override
     public void setColor(Color color) {
         super.setColor(color);
-        Tween.set(this, GameActorTween.ALPHA).target(0);
-        Tween.to(this, GameActorTween.ALPHA, 1000f).target(color.a).ease(TweenEquations.easeInOutQuad).start(alphaManager);
+
     }
 
-    @Override
-    public void setColorAlpha(float alpha) {
-        super.setColorAlpha(alpha);
+    public void setColor_texture(Texture color_texture) {
+        this.color_texture = color_texture;
     }
+
 }

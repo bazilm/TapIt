@@ -2,7 +2,8 @@ package com.keeneye.cubetest.Actors;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
@@ -13,7 +14,6 @@ import com.keeneye.cubetest.Tweens.GameActorTween;
 import com.keeneye.cubetest.Utils.AssetsLoader;
 
 import aurelienribon.tweenengine.Tween;
-import aurelienribon.tweenengine.TweenEquations;
 
 /**
  * Created by bazilm on 02-07-2015.
@@ -29,6 +29,13 @@ public class Grid extends GameActor {
     protected boolean draw_special;
     protected boolean draw_clock;
     private GridStage gridStage;
+
+    private Texture white_texture;
+    private Texture color_texture;
+    private Texture clock_texture;
+    private Texture special_texture;
+    private Pixmap pixmap;
+
 
 
 
@@ -46,6 +53,11 @@ public class Grid extends GameActor {
         draw_special=false;
         draw_clock=false;
 
+        pixmap = new Pixmap(60,60, Pixmap.Format.RGBA8888);
+        pixmap.setColor(Color.WHITE);
+        pixmap.fill();
+        white_texture=new Texture(pixmap);
+
         setBounds(x, y, width, height);
         this.gridStage=gridStage;
 
@@ -58,7 +70,8 @@ public class Grid extends GameActor {
         super.draw(batch, parentAlpha);
 
 
-        Gdx.gl.glEnable(GL20.GL_BLEND);
+       // Gdx.gl.glEnable(GL20.GL_BLEND);
+       /* renderer.setAutoShapeType(true);
         renderer.begin();
         renderer.set(ShapeRenderer.ShapeType.Filled);
         renderer.setColor(Color.WHITE);
@@ -66,42 +79,35 @@ public class Grid extends GameActor {
 
         renderer.setColor(alpha_back_color);
         renderer.rect(x,y,width,height);
+        renderer.end();
 
-        /*renderer.setColor(Color.BLACK);
+        renderer.setColor(Color.BLACK);
         renderer.set(ShapeRenderer.ShapeType.Line);
         renderer.rect(x, y, width, height);
 
         */
 
+        batch.draw(white_texture,x,y,width,height);
 
         if(draw) {
 
-
             alphaManager.update(Gdx.graphics.getDeltaTime());
-            renderer.set(ShapeRenderer.ShapeType.Filled);
-
-
-            renderer.setColor(color);
-
-
-            renderer.circle(circle.x, circle.y, circle.radius, 100);
 
             if(draw_clock) {
-                renderer.set(ShapeRenderer.ShapeType.Line);
-                renderer.setColor(Color.WHITE);
-                renderer.circle(clock.x, clock.y, clock.radius,60);
+
+                batch.draw(clock_texture,x,y,width,height);
             }
 
-            if(draw_special)
+            else if(draw_special)
             {
-                renderer.set(ShapeRenderer.ShapeType.Line);
-                renderer.setColor(color);
-                renderer.rect(special.x,special.y,special.width,special.height);
+               batch.draw(special_texture,x,y,width,height);
             }
+
+            else
+                batch.draw(color_texture,x,y,width,height);
 
 
         }
-        renderer.end();
 
     }
 
@@ -201,27 +207,38 @@ public class Grid extends GameActor {
 
     }
 
-    @Override
-    public void setColor(Color color) {
-        super.setColor(color);
-        Tween.set(this,GameActorTween.ALPHA).target(0);
-        Tween.to(this, GameActorTween.ALPHA, 1000f).target(color.a).ease(TweenEquations.easeInOutQuad).start(alphaManager);
-    }
 
     public boolean isDraw_clock() {
         return draw_clock;
     }
 
-    public void setDraw_clock(boolean draw_clock) {
-        this.draw_clock = draw_clock;
+    public void setClock_texture(Texture clock_texture) {
+        this.clock_texture = clock_texture;
     }
 
-    @Override
-    public void setColorAlpha(float alpha) {
-        super.setColorAlpha(alpha);
+    public void setSpecial_texture(Texture special_texture) {
+        this.special_texture = special_texture;
     }
+
+    public void setDraw_clock(boolean draw_clock) {
+        this.draw_clock = draw_clock;
+
+    }
+
+
 
     public void setDraw_special(boolean draw_special) {
         this.draw_special = draw_special;
+    }
+
+
+    public Texture getColor_texture() {
+        return color_texture;
+    }
+
+    public void setColor_texture(Texture color_texture) {
+        this.color_texture = color_texture;
+
+        Tween.from(this, GameActorTween.ALPHA,1f).target(0).start(alphaManager);
     }
 }

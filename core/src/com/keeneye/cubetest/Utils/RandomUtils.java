@@ -1,6 +1,5 @@
 package com.keeneye.cubetest.Utils;
 
-import com.badlogic.gdx.graphics.Color;
 import com.keeneye.cubetest.Enums.Colors;
 
 import java.util.Random;
@@ -20,9 +19,9 @@ public class RandomUtils {
 
     }
 
-    public Color getRandomColor()
+    public Colors getRandomColor()
     {
-        return values[RND.nextInt(values.length)].getColor();
+        return values[RND.nextInt(values.length)];
 
 
     }
