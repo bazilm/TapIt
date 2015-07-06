@@ -42,6 +42,9 @@ public class GridStage extends Stage {
 
     private boolean newScreen;
 
+    private boolean pause;
+
+
 
     public GridStage(int width,int height,CubeTest game)
     {
@@ -73,6 +76,7 @@ public class GridStage extends Stage {
         game_time=60;
 
         newScreen =false;
+        pause=false;
 
         batch = getBatch();
         batch.setProjectionMatrix(getCamera().combined);
@@ -118,28 +122,30 @@ public class GridStage extends Stage {
 
     @Override
     public void act(float delta) {
-        super.act(delta);
 
-        spawn_time+=delta;
-        background_change_time+=delta;
-        second_tracker+=delta;
-        //Gdx.app.log("GridStage","Act");
-        if(!newScreen) {
-            if (game_time <= 0) {
+        if(!pause) {
+            super.act(delta);
 
-                int highscore = preferences.getInteger("highscore");
+            spawn_time += delta;
+            background_change_time += delta;
+            second_tracker += delta;
+            //Gdx.app.log("GridStage","Act");
+            if (!newScreen) {
+                if (game_time <= 0) {
 
-                if (score > highscore) {
-                    preferences.putInteger("highscore", score);
-                    preferences.flush();
+                    int highscore = preferences.getInteger("highscore");
+
+                    if (score > highscore) {
+                        preferences.putInteger("highscore", score);
+                        preferences.flush();
+                    }
+                    //this.dispose();
+                    newScreen = true;
+                    game.setScreen(new OverScreen(game, this, score));
+
+
                 }
-                //this.dispose();
-                newScreen = true;
-                game.setScreen(new OverScreen(game, this, score));
-
-
             }
-        }
 
 
             if (second_tracker >= 1) {
@@ -149,7 +155,7 @@ public class GridStage extends Stage {
             }
 
 
-            if (spawn_time > 0.4) {
+            if (spawn_time > 0.35) {
                 spawn_time = 0;
                 int x = randomUtils.getRandomInt(8);
                 int y = randomUtils.getRandomInt(6);
@@ -160,7 +166,7 @@ public class GridStage extends Stage {
                     if (randomUtils.getRandomBoolean(8))
                         grids[x][y].setDraw_clock(true);
 
-                    if (randomUtils.getRandomBoolean(16))
+                    if (randomUtils.getRandomBoolean(12))
                         grids[x][y].setDraw_special(true);
 
                 }
@@ -187,16 +193,27 @@ public class GridStage extends Stage {
 
             }
 
+        }
+    }
 
+    public boolean isPause() {
+        return pause;
+    }
+
+    public void setPause(boolean pause) {
+        this.pause = pause;
     }
 
     @Override
     public void draw() {
-        super.draw();
-        batch.begin();
-        scoreFont.draw(batch,Integer.toString(score),getWidth()-50,getHeight()-50);
-        scoreFont.draw(batch,Integer.toString(game_time),getWidth()/2,getHeight()-50);
-        batch.end();
+        if(!pause) {
+
+            super.draw();
+            batch.begin();
+            scoreFont.draw(batch, Integer.toString(score), getWidth() - 50, getHeight() - 50);
+            scoreFont.draw(batch, Integer.toString(game_time), getWidth() / 2, getHeight() - 50);
+            batch.end();
+        }
     }
 
 
@@ -218,6 +235,23 @@ public class GridStage extends Stage {
         Gdx.app.log("Score:",Integer.toString(score));
 
         return super.touchDown(screenX, screenY, pointer, button);
+    }
+
+    public int tapAll()
+    {
+        int score=0;
+        for(int i=0;i<8;i++)
+        {
+            for(int j=0;j<6;j++)
+            {
+                score+=grids[i][j].tap();
+
+            }
+        }
+
+        return score;
+
+
     }
 
     public void setGame_time(int game_time) {

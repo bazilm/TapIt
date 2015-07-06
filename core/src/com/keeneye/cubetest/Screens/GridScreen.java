@@ -20,6 +20,7 @@ public class GridScreen implements Screen {
     private GridStage stage;
     private Batch batch;
 
+   
 
     public GridScreen(CubeTest game)
     {
@@ -31,6 +32,7 @@ public class GridScreen implements Screen {
     {
         this.game=game;
 
+
     }
 
     public GridStage getStage() {
@@ -40,8 +42,12 @@ public class GridScreen implements Screen {
     @Override
     public void show() {
 
-        stage = new GridStage(WIDTH,HEIGHT,game);
-        batch = stage.getBatch();
+        if(stage==null) {
+            stage = new GridStage(WIDTH, HEIGHT, game);
+            batch = stage.getBatch();
+        }
+
+
 
 
     }
@@ -53,7 +59,7 @@ public class GridScreen implements Screen {
         stage.act(delta);
         stage.draw();
 
-      
+
     }
 
     @Override
@@ -63,11 +69,13 @@ public class GridScreen implements Screen {
 
     @Override
     public void pause() {
+        stage.setPause(true);
 
     }
 
     @Override
     public void resume() {
+        stage.setPause(false);
 
     }
 

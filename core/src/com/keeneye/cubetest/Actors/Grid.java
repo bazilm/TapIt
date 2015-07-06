@@ -9,7 +9,11 @@ import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.keeneye.cubetest.Stages.GridStage;
+import com.keeneye.cubetest.Tweens.GameActorTween;
 import com.keeneye.cubetest.Utils.AssetsLoader;
+
+import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenEquations;
 
 /**
  * Created by bazilm on 02-07-2015.
@@ -73,15 +77,14 @@ public class Grid extends GameActor {
         if(draw) {
 
 
-
+            alphaManager.update(Gdx.graphics.getDeltaTime());
             renderer.set(ShapeRenderer.ShapeType.Filled);
-
 
 
             renderer.setColor(color);
 
 
-            renderer.circle(circle.x, circle.y,circle.radius);
+            renderer.circle(circle.x, circle.y, circle.radius, 100);
 
             if(draw_clock) {
                 renderer.set(ShapeRenderer.ShapeType.Line);
@@ -150,12 +153,20 @@ public class Grid extends GameActor {
                         if(draw_clock==true)
                             gridStage.setGame_time(gridStage.getGame_time()+4);
 
-                        int score=(int)(2-time)*10;
-                        draw = false;
-                        draw_clock=false;
-                        time = 0;
-                        AssetsLoader.tap.play();
-                        return score+10;
+                        if(draw_special==true)
+                        {
+                            int score=gridStage.tapAll();
+
+                            return score;
+
+
+
+                        }
+
+                        else {
+
+                            return tap();
+                        }
                     } else {
                         // Gdx.app.log("Grid", "Lost a Finger".concat(color.toString()).concat(" ").concat(back_color.toString()));
                         draw = false;
@@ -173,12 +184,41 @@ public class Grid extends GameActor {
 
         }
 
+    public int tap()
+    {
+        if(draw) {
+            int score = (int) (2 - time) * 10;
+            draw = false;
+            draw_clock = false;
+            time = 0;
+            AssetsLoader.tap.play();
+            return score + 10;
+        }
+        else
+            return 0;
+
+
+
+    }
+
+    @Override
+    public void setColor(Color color) {
+        super.setColor(color);
+        Tween.set(this,GameActorTween.ALPHA).target(0);
+        Tween.to(this, GameActorTween.ALPHA, 1000f).target(color.a).ease(TweenEquations.easeInOutQuad).start(alphaManager);
+    }
+
     public boolean isDraw_clock() {
         return draw_clock;
     }
 
     public void setDraw_clock(boolean draw_clock) {
         this.draw_clock = draw_clock;
+    }
+
+    @Override
+    public void setColorAlpha(float alpha) {
+        super.setColorAlpha(alpha);
     }
 
     public void setDraw_special(boolean draw_special) {
